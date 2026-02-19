@@ -48,8 +48,15 @@ public class ReusablePoolTest {
 	@Test
         @DisplayName("testAcquireReusable")
 
-	public void testAcquireReusable() {
+	public void testAcquireReusable() throws Exception{
+		ReusablePool pool = ReusablePool.getInstance();
 		
+		Reusable r1 = pool.acquireReusable();
+		Reusable r2 = pool.acquireReusable();
+		
+		assertTrue(r1 != null);
+		assertTrue(r2 != null);
+		assertTrue(r1 != r2);
 	}
 
 	/**
