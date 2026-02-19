@@ -47,7 +47,6 @@ public class ReusablePoolTest {
 	 */
 	@Test
         @DisplayName("testAcquireReusable")
-        @Disabled("Not implemented yet")
 
 	public void testAcquireReusable() {
 		
