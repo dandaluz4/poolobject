@@ -4,22 +4,28 @@
 package ubu.gii.dass.c01;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+<<<<<<< Upstream, based on branch 'master' of https://github.com/dandaluz4/poolobject/
+=======
+import static org.junit.jupiter.api.Assertions.assertThrows;
+>>>>>>> 78d2f7a 100% ReusablePool Cov
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Disabled;
 
 /**
  * @author alumno
  *
  */
 public class ReusablePoolTest {
+	
+	
 
 	@BeforeAll
 	public static void setUp() {
+		
 	}
 
 	@AfterAll
@@ -55,6 +61,7 @@ public class ReusablePoolTest {
 			assertNotNull(r1);
 			assertNotNull(r2);
 
+<<<<<<< Upstream, based on branch 'master' of https://github.com/dandaluz4/poolobject/
 			assertTrue(r1 instanceof Reusable);
 			assertTrue(r2 instanceof Reusable);
 
@@ -66,6 +73,15 @@ public class ReusablePoolTest {
 			assertTrue(e instanceof NotFreeInstanceException);
 		}
 
+=======
+		assertNotNull(r1);
+		assertNotNull(r2);
+		assertTrue(r1 != r2);
+		
+		pool.releaseReusable(r1);
+		pool.releaseReusable(r2);
+		
+>>>>>>> 78d2f7a 100% ReusablePool Cov
 	}
 
 	/**
@@ -81,12 +97,25 @@ public class ReusablePoolTest {
 		Reusable r1 = pool.acquireReusable();
 		pool.releaseReusable(r1);
 
-		try {
+		assertThrows(DuplicatedInstanceException.class, () -> {
 			pool.releaseReusable(r1);
-			assertTrue(false);
-		} catch (DuplicatedInstanceException e) {
-			assertTrue(true);
-		}
+		});
+	}
+	
+	@Test
+	@DisplayName("testAcquireReusableThrowsNotFreeInstanceException")
+	public void testAcquireReusableThrowsNotFreeInstanceException() throws Exception {
+		ReusablePool pool = ReusablePool.getInstance();
+
+		Reusable r1 = pool.acquireReusable();
+		Reusable r2 = pool.acquireReusable();
+
+		assertThrows(NotFreeInstanceException.class, () -> {
+			pool.acquireReusable();
+		});
+
+		pool.releaseReusable(r1);
+		pool.releaseReusable(r2);
 	}
 
 }
