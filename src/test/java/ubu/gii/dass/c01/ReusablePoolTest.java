@@ -11,20 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Disabled;
 
-
-
 /**
  * @author alumno
  *
  */
 public class ReusablePoolTest {
 
-	
 	@BeforeAll
-	public static void setUp(){
+	public static void setUp() {
 	}
 
-	
 	@AfterAll
 	public static void tearDown() throws Exception {
 	}
@@ -32,13 +28,13 @@ public class ReusablePoolTest {
 	/**
 	 * Test method for {@link ubu.gii.dass.c01.ReusablePool#getInstance()}.
 	 */
-        @Test
-        @DisplayName("testGetInstance")
- 
+	@Test
+	@DisplayName("testGetInstance")
+
 	public void testGetInstance() {
 		ReusablePool pool1 = ReusablePool.getInstance();
 		ReusablePool pool2 = ReusablePool.getInstance();
-		
+
 		assertTrue(pool1 == pool2, "getInstance should return same instance");
 	}
 
@@ -46,27 +42,38 @@ public class ReusablePoolTest {
 	 * Test method for {@link ubu.gii.dass.c01.ReusablePool#acquireReusable()}.
 	 */
 	@Test
-        @DisplayName("testAcquireReusable")
+	@DisplayName("testAcquireReusable")
 
-	public void testAcquireReusable() throws Exception{
+	public void testAcquireReusable() throws Exception {
 		ReusablePool pool = ReusablePool.getInstance();
-		
+
 		Reusable r1 = pool.acquireReusable();
 		Reusable r2 = pool.acquireReusable();
-		
+
 		assertTrue(r1 != null);
 		assertTrue(r2 != null);
 		assertTrue(r1 != r2);
 	}
 
 	/**
-	 * Test method for {@link ubu.gii.dass.c01.ReusablePool#releaseReusable(ubu.gii.dass.c01.Reusable)}.
+	 * Test method for
+	 * {@link ubu.gii.dass.c01.ReusablePool#releaseReusable(ubu.gii.dass.c01.Reusable)}.
 	 */
 	@Test
-        @DisplayName("testReleaseReusable")
-        @Disabled("Not implemented yet")
-	public void testReleaseReusable() {
-		
+	@DisplayName("testReleaseReusable")
+
+	public void testReleaseReusable() throws Exception {
+		ReusablePool pool = ReusablePool.getInstance();
+
+		Reusable r1 = pool.acquireReusable();
+		pool.releaseReusable(r1);
+
+		try {
+			pool.releaseReusable(r1);
+			assertTrue(false);
+		} catch (DuplicatedInstanceException e) {
+			assertTrue(true);
+		}
 	}
 
 }
