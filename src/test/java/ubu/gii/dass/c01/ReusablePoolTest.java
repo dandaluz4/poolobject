@@ -4,10 +4,7 @@
 package ubu.gii.dass.c01;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-<<<<<<< Upstream, based on branch 'master' of https://github.com/dandaluz4/poolobject/
-=======
 import static org.junit.jupiter.api.Assertions.assertThrows;
->>>>>>> 78d2f7a 100% ReusablePool Cov
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
@@ -53,27 +50,10 @@ public class ReusablePoolTest {
 
 	public void testAcquireReusable() throws Exception {
 		ReusablePool pool = ReusablePool.getInstance();
-		
-		try {
 
-			Reusable r1 = pool.acquireReusable();
-			Reusable r2 = pool.acquireReusable();
-			assertNotNull(r1);
-			assertNotNull(r2);
+		Reusable r1 = pool.acquireReusable();
+		Reusable r2 = pool.acquireReusable();
 
-<<<<<<< Upstream, based on branch 'master' of https://github.com/dandaluz4/poolobject/
-			assertTrue(r1 instanceof Reusable);
-			assertTrue(r2 instanceof Reusable);
-
-			assertTrue(r1.util().contains("Using the reusable object"));
-
-			Reusable r3 = pool.acquireReusable();
-		} catch (NotFreeInstanceException e) {
-
-			assertTrue(e instanceof NotFreeInstanceException);
-		}
-
-=======
 		assertNotNull(r1);
 		assertNotNull(r2);
 		assertTrue(r1 != r2);
@@ -81,7 +61,6 @@ public class ReusablePoolTest {
 		pool.releaseReusable(r1);
 		pool.releaseReusable(r2);
 		
->>>>>>> 78d2f7a 100% ReusablePool Cov
 	}
 
 	/**
