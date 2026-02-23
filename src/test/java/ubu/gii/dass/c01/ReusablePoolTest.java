@@ -6,6 +6,9 @@ package ubu.gii.dass.c01;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.ByteArrayOutputStream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,20 +16,28 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
 /**
- * @author alumno
- *
+ * @author Diego Andaluz Arnanz
+ * @author Rodrigo Rodríguez Fernández
+ * @author Gadea Díez Prieto
  */
 public class ReusablePoolTest {
 	
-	
+	private static ReusablePool pool;
 
 	@BeforeAll
 	public static void setUp() {
-		
+		pool = ReusablePool.getInstance();
 	}
 
 	@AfterAll
 	public static void tearDown() throws Exception {
+		// Liberamos posibles instancias ocupadas
+        try {
+            while (true) {
+                pool.acquireReusable();
+            }
+        } catch (Exception ignored) {
+        }
 	}
 
 	/**
@@ -36,10 +47,13 @@ public class ReusablePoolTest {
 	@DisplayName("testGetInstance")
 
 	public void testGetInstance() {
-		ReusablePool pool1 = ReusablePool.getInstance();
-		ReusablePool pool2 = ReusablePool.getInstance();
+		assertNotNull(pool);
 
-		assertTrue(pool1 == pool2, "getInstance should return same instance");
+        ReusablePool pool2 = ReusablePool.getInstance();
+
+        assertNotNull(pool2);
+        
+        assertTrue(pool == pool2, "getInstance should return same instance");
 	}
 
 	/**
@@ -49,8 +63,6 @@ public class ReusablePoolTest {
 	@DisplayName("testAcquireReusable")
 
 	public void testAcquireReusable() throws Exception {
-		ReusablePool pool = ReusablePool.getInstance();
-
 		Reusable r1 = pool.acquireReusable();
 		Reusable r2 = pool.acquireReusable();
 
@@ -71,8 +83,7 @@ public class ReusablePoolTest {
 	@DisplayName("testReleaseReusable")
 
 	public void testReleaseReusable() throws Exception {
-		ReusablePool pool = ReusablePool.getInstance();
-
+		
 		Reusable r1 = pool.acquireReusable();
 		pool.releaseReusable(r1);
 
@@ -84,8 +95,7 @@ public class ReusablePoolTest {
 	@Test
 	@DisplayName("testAcquireReusableThrowsNotFreeInstanceException")
 	public void testAcquireReusableThrowsNotFreeInstanceException() throws Exception {
-		ReusablePool pool = ReusablePool.getInstance();
-
+		
 		Reusable r1 = pool.acquireReusable();
 		Reusable r2 = pool.acquireReusable();
 
@@ -96,5 +106,5 @@ public class ReusablePoolTest {
 		pool.releaseReusable(r1);
 		pool.releaseReusable(r2);
 	}
-
+	
 }
