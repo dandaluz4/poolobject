@@ -10,3 +10,4 @@ Authors:
 
 - Carlos Lopez Nozal
 - Jesus Alonso Abad
+- Gadea Díez Prieto
